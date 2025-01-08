@@ -9,13 +9,21 @@
         <div class="tandon">
             <div class="upr"></div>
             <div class="up">
-                <div class="txt1"><b>Tinggi Air :&nbsp; 3 &nbsp;</b><b>m</b></div>
+                <div class="txt1"><b>Distance :&nbsp; 3 &nbsp;</b><b>cm</b></div>
             </div>
             <div class="md">
-                <div class="txt2"><b>Volume Air :&nbsp; 9.42 &nbsp;</b><b>m3</b></div>
+                <div class="txt1"><b>Level :&nbsp; 75 &nbsp;</b></div>
+                <div class="card2">
+                    <h3><b>Relay</b></h3>
+                    <input type="checkbox" id="check" class="toggle">
+                    <label for="check"></label>
+                    <h3><b>Manual</b></h3>
+                    <input type="checkbox" id="check1" class="toggle">
+                    <label for="check1"></label>
+                </div>
             </div>
             <div class="bt">
-                <div class="txt1"><b>Liter Air :&nbsp; 45 &nbsp;</b><b>Liter</b></div>
+                <div class="txt1"><b>Temperature :&nbsp; 25 &nbsp;</b><b>°C</b></div>
             </div>
         </div>
     </div>
@@ -25,10 +33,58 @@
    body{
     background: linear-gradient(to bottom, #ccf9ff, #7ce8ff, #55d0ff, #00acdf, #0080bf);
    }
+   
+   input[type="checkbox"].toggle{
+    opacity: 0;
+    position: absolute;
+   }
 
-   .txt2{
+   input[type="checkbox"].toggle + label{
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+   }
+
+   input[type="checkbox"].toggle + label::before{
+    content: "";
+    width: 80px;
+    height: 40px;
+    border-radius: 5em;
+    background-color: black;
+    position: relative;
+    transition: 350ms ease-in-out;
+    outline: 2px solid black;
+   }
+
+   input[type="checkbox"].toggle:focus + label::before{
+    outline: 2px solid black;
+   }
+
+
+   input[type="checkbox"].toggle + label::after{
+    content: "";
+    width: 40px;
+    height: 40px;
+    border-radius: 5em;
+    background-color: white;
+    position: absolute;
+    transition: 350ms ease-in-out;
+   }
+
+   input[type="checkbox"].toggle:checked + label::before{
+    background-color: white;
+   }
+
+   input[type="checkbox"].toggle:checked + label::after{
+    background-color: black;
+    transform: translateX(100%);
+   }
+
+   .card2{
+    flex-direction: column;
     width: 250px;
-    height: 30px;
+    height: 300px;
     background-color: azure;
     z-index: 2;
     position: absolute;
@@ -36,7 +92,6 @@
     display: flex;
     border-radius: 5px;
     border: 3px solid;
-    padding-left: 5px;
     align-items: center;
     justify-content: center;
    }
@@ -51,7 +106,6 @@
     display: flex;
     border-radius: 5px;
     border: 3px solid;
-    padding-left: 5px;
     align-items: center;
     justify-content: center;
    }
