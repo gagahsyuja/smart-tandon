@@ -1,36 +1,45 @@
 <script>
+
     import '@fortawesome/fontawesome-free/css/all.min.css';
+
+    let {
+
+        distance = $bindable(99),
+        level = $bindable(99),
+        temperature = $bindable(99),
+        manualToggle = $bindable(false),
+        relayToggle = $bindable(false)
+
+    } = $props();
+
 </script>
 
-<body>
-    
-    <div class="card">
-        <i class="fa-solid fa-droplet fa-3x">&nbsp; SMART TANDON</i>
-        <div class="tandon">
-            <div class="upr"></div>
-            <div class="up">
-                <div class="txt1"><b>Distance :&nbsp; 3 &nbsp;</b><b>cm</b></div>
-            </div>
-            <div class="md">
-                <div class="txt1"><b>Level :&nbsp; 75 &nbsp;</b></div>
-                <div class="card2">
-                    <h3><b>Relay</b></h3>
-                    <input type="checkbox" id="check" class="toggle">
-                    <label for="check"></label>
-                    <h3><b>Manual</b></h3>
-                    <input type="checkbox" id="check1" class="toggle">
-                    <label for="check1"></label>
-                </div>
-            </div>
-            <div class="bt">
-                <div class="txt1"><b>Temperature :&nbsp; 25 &nbsp;</b><b>°C</b></div>
+<div class="card">
+    <i class="fa-solid fa-droplet fa-3x">&nbsp; SMART TANDON</i>
+    <div class="tandon">
+        <div class="upr"></div>
+        <div class="up">
+            <div class="txt1"><b>Distance :&nbsp; { distance } &nbsp;</b><b>cm</b></div>
+        </div>
+        <div class="md">
+            <div class="txt1"><b>Level :&nbsp; { level } &nbsp;</b></div>
+            <div class="card2">
+                <h3><b>Manual</b></h3>
+                <input type="checkbox" id="check1" class="toggle" bind:checked={ manualToggle }>
+                <label for="check1"></label>
+                <h3><b>Relay</b></h3>
+                <input type="checkbox" id="check" class="toggle" bind:checked={ relayToggle } disabled={ !manualToggle }>
+                <label for="check"></label>
             </div>
         </div>
+        <div class="bt">
+            <div class="txt1"><b>Temperature :&nbsp; { temperature } &nbsp;</b><b>°C</b></div>
+        </div>
     </div>
-</body>
+</div>
 
 <style>
-   body{
+   :global(html) {
     background: linear-gradient(to bottom, #ccf9ff, #7ce8ff, #55d0ff, #00acdf, #0080bf);
    }
    
@@ -79,6 +88,15 @@
    input[type="checkbox"].toggle:checked + label::after{
     background-color: black;
     transform: translateX(100%);
+   }
+
+   input[type="checkbox"].toggle:disabled + label::after {
+    background-color: gray;
+    cursor: not-allowed;
+   }
+
+   input[type="checkbox"].toggle:disabled + label::before {
+    cursor: not-allowed;
    }
 
    .card2{
