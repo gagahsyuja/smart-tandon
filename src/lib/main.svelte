@@ -1,16 +1,72 @@
-<script>
+<script lang="ts">
 
     import '@fortawesome/fontawesome-free/css/all.min.css';
+    import { onMount } from 'svelte';
 
     let {
 
-        distance = $bindable(99),
-        level = $bindable(99),
-        temperature = $bindable(99),
+        distance = $bindable(0),
+        level = $bindable(0),
+        temperature = $bindable('0.0'),
         manualToggle = $bindable(false),
         relayToggle = $bindable(false)
 
     } = $props();
+
+    let dataLoaded = $state(false);
+
+    const updateData = async (relayState: Boolean, manualState: Boolean) => {
+        
+        let body = {
+            distance,
+            level,
+            temperature,
+            state: {
+                manualMode: manualState,
+                relay: relayState
+            }
+        };
+        
+        let response = await fetch('http://127.0.0.1:3000/api/information', {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+
+    const getInformation = async () => {
+        
+        let response = await fetch('http://127.0.0.1:3000/api/information');
+
+        let result = await response.json();
+        
+        return result.data;
+    }
+
+    $effect(() => {
+
+        if (dataLoaded) updateData(relayToggle, manualToggle);
+
+    })
+
+    onMount(async () => {
+
+        let data = await getInformation();
+
+        if (data.length) {
+
+            distance = data[0].distance;
+            level = data[0].level;
+            temperature = data[0].temperature;
+            manualToggle = data[0].state.manualMode;
+            relayToggle = data[0].state.relay;
+        }
+
+        dataLoaded = true;
+
+    })
 
 </script>
 
