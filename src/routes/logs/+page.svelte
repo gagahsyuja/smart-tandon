@@ -1,11 +1,14 @@
 <script lang="ts">
     import '@fortawesome/fontawesome-free/css/all.min.css';
     import { goto } from "$app/navigation";
+    import Title from '$lib/title.svelte';
 
     import type { PageData } from './$types';
 
     let { data }: { data: PageData } = $props();
 </script>
+
+<Title />
 
 <div class="card">
     
@@ -61,7 +64,7 @@
         width: auto;
         height: 665px;
         box-shadow: 2px 20px 50px #ccf9ff;
-        margin-top: 10%;
+        margin-top: 4%;
         margin-bottom: 20%;
         margin-left: 15%;
         margin-right: 15%;

@@ -3,6 +3,7 @@
     import '@fortawesome/fontawesome-free/css/all.min.css';
     import { onMount } from 'svelte';
     import { goto } from '$app/navigation';
+    import Title from '$lib/title.svelte';
 
     let {
 
@@ -69,18 +70,14 @@
 
     })
 
-    function closeAlert(event) { 
-        event.target.closest('.alert').style.display = 'none'; 
-    }
 </script>
-<div class="alert">
-    <span><button class="closebtn" on:click={closeAlert}><i class="fa-solid fa-x"></i></button></span>
-    <strong>Warning!</strong> water temperature is too high.
-</div>
+{#if parseFloat(temperature) > 40.0}
+    <div class="alert">
+        <strong>Warning!</strong> water temperature is too high.
+    </div>
+{/if}
 
-<div class="head">
-    <i class="fa-solid fa-droplet fa-3x">&nbsp; SMART TANDON</i>
-</div>
+<Title />
 
 <div class="card">
     <div class="tandon">
