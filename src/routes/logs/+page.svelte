@@ -32,7 +32,7 @@
         </table>
     </div>
     <div class="home">
-        <button on:click={() => goto('main')}><i class="fa-solid fa-house fa-2x"></i></button>
+        <button on:click={() => goto('/')}><i class="fa-solid fa-house fa-2x"></i></button>
     </div>
 </div>
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 
     import Main from "$lib/main.svelte";
-	import type { PageData } from '../$types';
+	import type { PageData } from './$types';
 
     /* TODO:
         - INPUTAN NOMOR UNTUK MENGATUR KAPAN KRAN TERBUKA BISA BERUPA JARAK (CM)
