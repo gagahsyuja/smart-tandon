@@ -2,6 +2,7 @@
 
     import '@fortawesome/fontawesome-free/css/all.min.css';
     import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
 
     let {
 
@@ -68,14 +69,30 @@
 
     })
 
+    function closeAlert(event) { 
+        event.target.closest('.alert').style.display = 'none'; 
+    }
 </script>
+<div class="alert">
+    <span><button class="closebtn" on:click={closeAlert}><i class="fa-solid fa-x"></i></button></span>
+    <strong>Warning!</strong> water temperature is too high.
+</div>
+
+<div class="head">
+    <i class="fa-solid fa-droplet fa-3x">&nbsp; SMART TANDON</i>
+</div>
 
 <div class="card">
-    <i class="fa-solid fa-droplet fa-3x">&nbsp; SMART TANDON</i>
     <div class="tandon">
         <div class="upr"></div>
         <div class="up">
             <div class="txt1"><b>Distance :&nbsp; { distance } &nbsp;</b><b>cm</b></div>
+            <div class="card3">
+                <h3><b>Distance Costume</b></h3>
+                <input type="number" id="dc" class="tb" placeholder="Enter here">
+                <button type="submit" class="sbtn">Submit</button>
+            </div>
+            
         </div>
         <div class="md">
             <div class="txt1"><b>Level :&nbsp; { level } &nbsp;</b></div>
@@ -90,6 +107,14 @@
         </div>
         <div class="bt">
             <div class="txt1"><b>Temperature :&nbsp; { temperature } &nbsp;</b><b>°C</b></div>
+            <div class="card3">
+                <h3><b>Height Costume</b></h3>
+                <input type="number" id="dc" class="tb" placeholder="Enter here"> 
+                <button type="submit" class="sbtn">Submit</button>
+            </div>
+        </div>
+        <div class="log">
+            <button on:click={() => goto('/logs')}><i class="fa-solid fa-file-waveform fa-2x"></i></button>
         </div>
     </div>
 </div>
@@ -98,6 +123,49 @@
    :global(html) {
     background: linear-gradient(to bottom, #ccf9ff, #7ce8ff, #55d0ff, #00acdf, #0080bf);
    }
+   
+
+   .alert {
+    padding: 20px;
+    background-color: #f44336;
+    color: white;
+    width: 100%;
+    top: 0%;
+    position: absolute;
+    z-index: 3;
+    }
+
+    .closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    }
+
+    .closebtn:hover {
+    color: black;
+    }
+   
+   .log{
+    width: 50px;
+    height: 50px;
+    border: 3px solid black;
+    display: flex;
+    margin-top: 0.5%;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+   }
+
+   .log:hover{
+    background-color: black;
+    color: aliceblue;
+   }
+
    
    input[type="checkbox"].toggle{
     opacity: 0;
@@ -158,7 +226,7 @@
    .card2{
     flex-direction: column;
     width: 250px;
-    height: 300px;
+    height: 150px;
     background-color: azure;
     z-index: 2;
     position: absolute;
@@ -168,6 +236,47 @@
     border: 3px solid;
     align-items: center;
     justify-content: center;
+    margin-top: 35px;
+   }
+
+   .card3{
+    flex-direction: column;
+    width: 250px;
+    height: 115px;
+    background-color: azure;
+    z-index: 3;
+    position: absolute;
+    right: 25%;
+    display: flex;
+    border-radius: 5px;
+    border: 3px solid;
+    align-items: center;
+    justify-content: center;
+   }
+
+   input[type="number"].tb{
+    border: 3px solid black;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+   }
+   
+   input::placeholder{
+    text-align: center;
+   }
+
+   .sbtn{
+    margin-top: 5px;
+    border: 3px solid black;
+    color: black;
+    border-radius: 20px;
+    padding: 5px 10px;
+    text-align: center;
+    font-weight: bold;
+   }
+   .sbtn:hover{
+    background-color: black;
+    color: aliceblue;
    }
 
    .txt1{
@@ -241,20 +350,20 @@
         width: auto;
         height: 665px;
         box-shadow: 2px 20px 50px #ccf9ff;
-        margin-top: 12%;
-        margin-bottom: 4%;
+        margin-top: 4%;
+        margin-bottom: 20%;
         margin-left: 15%;
         margin-right: 15%;
         border-radius: 15px;
    }
 
-   .card i{
-        position: absolute;
+   .head i{
+        display: flex;
         z-index: 3;
-        top: 10%;
-        left: 37%;
-        right: 63%;
+        margin-top: 6%;
+        justify-content: center;
         color: aliceblue;
-        width: 468px;
+        width: 100%;
+        height: auto;
    }
 </style>
