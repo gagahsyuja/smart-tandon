@@ -6,6 +6,17 @@
     import type { PageData } from './$types';
 
     let { data }: { data: PageData } = $props();
+
+    const dateOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+        timeZoneName: 'short'
+    };
+
 </script>
 
 <Title />
@@ -23,9 +34,10 @@
                 </tr>
             </thead>
             <tbody>
-                {#each data.information.data as information}
+            {#each data.information.data as information}
+                {@const date = new Date(information.createdAt).toLocaleDateString('id-ID', dateOptions)}
                 <tr>
-                    <td>{information.createdAt}</td>
+                    <td>{date}</td>
                     <td>{information.distance}</td>
                     <td>{information.level}</td>
                     <td>{information.temperature}</td>
