@@ -15,6 +15,9 @@
 
     } = $props();
 
+    let threshold = $state(0);
+    let height = $state(0);
+
     let dataLoaded = $state(false);
 
     const updateData = async (relayState: Boolean, manualState: Boolean) => {
@@ -26,10 +29,14 @@
             state: {
                 manualMode: manualState,
                 relay: relayState
+            },
+            config: {
+                threshold,
+                height
             }
         };
         
-        let response = await fetch('http://127.0.0.1:3000/api/information', {
+        let response = await fetch('https://doscom.org/api/information', {
             method: 'POST',
             body: JSON.stringify(body),
             headers: {
@@ -40,7 +47,7 @@
 
     const getInformation = async () => {
         
-        let response = await fetch('http://127.0.0.1:3000/api/information');
+        let response = await fetch('https://doscom.org/api/information');
 
         let result = await response.json();
         
@@ -64,6 +71,8 @@
             temperature = data[0].temperature;
             manualToggle = data[0].state.manualMode;
             relayToggle = data[0].state.relay;
+            height = data[0].config.height;
+            threshold = data[0].config.threshold;
         }
 
         dataLoaded = true;
@@ -86,7 +95,9 @@
             <div class="txt1"><b>Distance :&nbsp; { distance } &nbsp;</b><b>cm</b></div>
             <div class="card3">
                 <h3><b>Distance Costume</b></h3>
-                <input type="number" id="dc" class="tb" placeholder="Enter here">
+                <input type="number" id="dc" class="tb" placeholder="Enter here" bind:value={threshold}
+                    onclick={ async () => updateData(relayToggle, manualToggle) }
+                >
                 <button type="submit" class="sbtn">Submit</button>
             </div>
             
@@ -106,12 +117,12 @@
             <div class="txt1"><b>Temperature :&nbsp; { temperature } &nbsp;</b><b>°C</b></div>
             <div class="card3">
                 <h3><b>Height Costume</b></h3>
-                <input type="number" id="dc" class="tb" placeholder="Enter here"> 
-                <button type="submit" class="sbtn">Submit</button>
+                <input type="number" id="dc" class="tb" placeholder="Enter here" bind:value={height}> 
+                <button type="submit" class="sbtn" onclick={ async () => updateData(relayToggle, manualToggle) }>Submit</button>
             </div>
         </div>
         <div class="log">
-            <button on:click={() => goto('/logs')}><i class="fa-solid fa-file-waveform fa-2x"></i></button>
+            <button onclick={() => goto('/logs')}><i class="fa-solid fa-file-waveform fa-2x"></i></button>
         </div>
     </div>
 </div>
