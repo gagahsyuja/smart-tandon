@@ -11,5 +11,6 @@
         color: aliceblue;
         width: 100%;
         height: auto;
+        text-shadow: 2px 1px 4px black;
    }
 </style>
