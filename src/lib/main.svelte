@@ -5,23 +5,24 @@
     import { goto } from '$app/navigation';
     import Title from '$lib/title.svelte';
 
-    let {
-
-        distance = $bindable(0),
-        level = $bindable(0),
-        temperature = $bindable('0.0'),
-        manualToggle = $bindable(false),
-        relayToggle = $bindable(false)
-
-    } = $props();
+    let distance = $state(0);
+    let level = $state(0);
+    let temperature = $state('0.0');
+    let manualToggle = $state(false);
+    let relayToggle = $state(false);
 
     let threshold = $state(0);
     let height = $state(0);
+    let newThreshold: Number | null = $state(null);
+    let newHeight: Number | null = $state(null);
 
     let dataLoaded = $state(false);
 
     const updateData = async (relayState: Boolean, manualState: Boolean) => {
-        
+
+        let thresholdValue = newThreshold ? newThreshold : threshold;
+        let heightValue = newHeight ? newHeight : height;
+
         let body = {
             distance,
             level,
@@ -31,8 +32,8 @@
                 relay: relayState
             },
             config: {
-                threshold,
-                height
+                threshold: thresholdValue,
+                height: heightValue
             }
         };
         
@@ -43,6 +44,9 @@
                 'Content-Type': 'application/json'
             }
         });
+
+        newHeight = null;
+        newThreshold = null;
     }
 
     const getInformation = async () => {
@@ -50,19 +54,8 @@
         let response = await fetch('https://doscom.org/api/information');
 
         let result = await response.json();
-        
-        return result.data;
-    }
 
-    $effect(() => {
-
-        if (dataLoaded) updateData(relayToggle, manualToggle);
-
-    })
-
-    onMount(async () => {
-
-        let data = await getInformation();
+        let data = result.data;
 
         if (data.length) {
 
@@ -74,8 +67,23 @@
             height = data[0].config.height;
             threshold = data[0].config.threshold;
         }
+    }
+
+    $effect(() => {
+
+        // if (dataLoaded) updateData(relayToggle, manualToggle);
+
+    })
+
+    onMount(async () => {
+
+        getInformation();
 
         dataLoaded = true;
+
+        setInterval(async () => {
+            getInformation();
+        }, 3000);
 
     })
 
@@ -95,10 +103,9 @@
             <div class="txt1"><b>Distance :&nbsp; { distance } &nbsp;</b><b>cm</b></div>
             <div class="card3">
                 <h3><b>Distance Costume</b></h3>
-                <input type="number" id="dc" class="tb" placeholder="Enter here" bind:value={threshold}
-                    onclick={ async () => updateData(relayToggle, manualToggle) }
+                <input type="number" id="dc" class="tb" placeholder="{threshold.toString()}" bind:value={newThreshold}
                 >
-                <button type="submit" class="sbtn">Submit</button>
+                <button disabled={newThreshold == null} type="submit" class="sbtn" onclick={ async () => updateData(relayToggle, manualToggle) }>Submit</button>
             </div>
             
         </div>
@@ -106,10 +113,14 @@
             <div class="txt1"><b>Level :&nbsp; { level } &nbsp;</b></div>
             <div class="card2">
                 <h3><b>Manual</b></h3>
-                <input type="checkbox" id="check1" class="toggle" bind:checked={ manualToggle }>
+                <input type="checkbox" id="check1" class="toggle" bind:checked={ manualToggle }
+                    onchange={() => updateData(relayToggle, manualToggle)}
+                >
                 <label for="check1"></label>
                 <h3><b>Relay</b></h3>
-                <input type="checkbox" id="check" class="toggle" bind:checked={ relayToggle } disabled={ !manualToggle }>
+                <input type="checkbox" id="check" class="toggle" bind:checked={ relayToggle } disabled={ !manualToggle }
+                    onchange={() => updateData(relayToggle, manualToggle)}
+                >
                 <label for="check"></label>
             </div>
         </div>
@@ -117,8 +128,8 @@
             <div class="txt1"><b>Temperature :&nbsp; { temperature } &nbsp;</b><b>°C</b></div>
             <div class="card3">
                 <h3><b>Height Costume</b></h3>
-                <input type="number" id="dc" class="tb" placeholder="Enter here" bind:value={height}> 
-                <button type="submit" class="sbtn" onclick={ async () => updateData(relayToggle, manualToggle) }>Submit</button>
+                <input type="number" id="dc" class="tb" placeholder="{height.toString()}" bind:value={newHeight}> 
+                <button disabled={newHeight == null} type="submit" class="sbtn" onclick={ async () => updateData(relayToggle, manualToggle) }>Submit</button>
             </div>
         </div>
         <div class="log">
